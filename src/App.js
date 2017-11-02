@@ -7,10 +7,20 @@ class App extends Component {
   state = {
     currentAnimation: 0,
     wiggle: [0, 0],
-    mouse: [0, 0]
+    mouse: [0, 0],
+    elements: []
   }
 
   componentDidMount() {
+    let N = 300
+    let elements = new Array(N)
+    elements.fill(0)
+    elements = elements.map((e, i) => [Math.random() * 100, Math.random() * 100, (Math.random() * 10 + 1)])
+    elements.sort( (e1, e2) => e1[2] < e2[2]) //sort array 
+    console.log(elements)
+    this.setState({
+      elements
+    })
     setInterval(this.handleWiggle, 1020);
   }
 
@@ -63,7 +73,6 @@ class App extends Component {
     }
     let currentAnimation = setInterval(wiggleTransition, 20);
     this.setState({ currentAnimation })
-    console.log(currentAnimation)
   }
 
   render() {
@@ -74,30 +83,22 @@ class App extends Component {
     return (
       <div className="App" onMouseMove={this.handleMouseMove} >
         <div className="Container" >
-          <div
-            className="one"
-            style={{
-              transform: `translateX(${pos[0] / 3}px) translateY(${pos[1] / 3}px)`
-            }}
-          >
-            one
-          </div>
-          <div
-            className="two"
-            style={{
-              transform: `translateX(${pos[0] / 2}px) translateY(${pos[1] / 2}px)`
-            }}
-          >
-            two
-          </div>
-          <div
-            className="three"
-            style={{
-              transform: `translateX(${pos[0] / 1}px) translateY(${pos[1] / 1}px)`
-            }}
-          >
-            three
-          </div>
+
+          {this.state.elements.map((e, i) => 
+            <div
+              key={i}
+              className="box"
+              style={{
+                transform: `translateX(${pos[0] / e[2]}px) translateY(${pos[1] / e[2]}px) scale(${2.5 / (e[2])},${2.5 / (e[2])})`,
+                backgroundColor: ``,
+                left: `${e[0]}vw`,
+                top: `${e[1]}vh`,
+                color: 'white',
+              }}
+            >
+             .
+            </div>
+          )}
         </div>
       </div>
     );
